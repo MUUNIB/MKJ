@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise For You ✨</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8e1f4, #e0c3f7, #c2e6ff);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 3s forwards 0.5s;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #6a4c93;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Letter Section */
+        .letter-container {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(106, 76, 147, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #333;
+            position: relative;
+            z-index: 2;
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+
+        /* Surprise Button */
+        .surprise-button-container {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .surprise-button {
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+            background-size: 300% 300%;
+            animation: gradientButton 5s ease infinite;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(161, 140, 209, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .surprise-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(161, 140, 209, 0.7);
+        }
+
+        /* Surprise Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 215, 232, 0.8);
+            text-align: center;
+            max-height: 90vh; /* Prevent modal from going off screen */
+            overflow-y: auto; /* Allow scrolling if content is too long */
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 30px;
+            color: #6a4c93;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+
+        /* Modal Content Styling */
+        #modal-body-content {
+            width: 100%;
+            display: block;
+            min-height: 100px;
+        }
+
+        /* Navigation */
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid #6a4c93;
+            color: #6a4c93;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #6a4c93;
+            color: white;
+        }
+
+        /* Music Controls */
+        .music-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(106, 76, 147, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-controls i {
+            color: #6a4c93;
+            font-size: 24px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradientButton {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Urdu Font Class */
+        .urdu {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            direction: rtl;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>For Special Person ❤️</h1>
+        </header>
+
+        <div class="letter-container">
+            <div class="letter" id="typed-text"></div>
+        </div>
+
+        <div class="surprise-button-container">
+            <button class="surprise-button" id="surprise-button">
+                Click for a Surprise! 🎁
+            </button>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="cake.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Birthday Cake
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" id="modal-close">×</button>
+            <div id="modal-body-content">
+                </div>
+        </div>
+    </div>
+
+    <div class="music-controls" id="music-toggle">
+        <i class="fas fa-volume-mute" id="music-icon"></i>
+    </div>
+
+    <audio id="click-sound" preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_bb630cc098.mp3?filename=cute-notification-ringtone-1-173850.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="background-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=relaxing-145038.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.5.1/confetti.browser.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- TYPED.JS CONFIGURATION ---
+            const letterContent = 
+"میری زندگی تو فراق ہے، وہ ازل سے دل میں مکیں سہی\nوہ نگاہِ شوق سے دور ہیں، رگِ جاں سے لاکھ قریں سہی\n\n" +
+
+"As I’m writing this, so many memories come back—clear, soft, and warm. And today I want to write exactly what my heart remembers… not just about you, but about ‘us’. Every chapter, every moment, every silly fight, every unexpected laugh.\n\n" +
+
+"ہمیں جان دینی ہے ایک دن، وہ کسی طرح، وہ کہیں سہی\nہمیں آپ کھینچئے دار پر، جو نہیں کوئی تو ہمیں سہی\n\n" +
+
+"Mujhe aaj bhi sab yaad hai… bilkul sab. Especially **14 September 2018 — 9:27 AM**, your first message to me. I still remember how random it was, how suddenly everything changed after that, how naturally the conversation started… and how it never really ended.\n\n" +
+
+"And haan… mujhe ye bhi yaad hai — **pehli dafa maine tumhe black dress mein dekha tha haha**. I still remember thinking: ‘Okay… wow.’ That moment is permanently saved in my brain like a favorite photo.\n\n" +
+
+"سرِ طور ہو، سرِ حشر ہو، ہمیں انتظار قبول ہے\nوہ کبھی ملیں، وہ کہیں ملیں، وہ کبھی سہی، وہ کہیں سہی\n\n" +
+
+"We’ve been through so many phases—funny ones, emotional ones, caring ones, stupid arguments, long breaks, long messages, long silences, long apologies—everything. But still… somehow we always end up finding our way back to talking again.\n\n" +
+
+"نہ ہو ان پہ جو میرا بس نہیں، کہ یہ عاشقی ہے ہوس نہیں\nمیں انہیں کا تھا، میں انہیں کا ہوں، وہ میرے نہیں تو نہیں سہی\n\n" +
+
+"I don’t know what this connection is, or what name it deserves… I just know it’s rare. And real. And one of the best things life gave me.\n\n" +
+
+"جو ہو فیصلہ وہ سنائیے، اسے حشر پر نہ اٹھائیے\nجو کریں گے آپ ستم وہاں، وہ ابھی سہی، وہ یہیں سہی\n\n" +
+
+"And no matter how much time passes, or where life takes both of us… I remember everything. Every conversation. Every moment. Every version of us.\n\n" +
+
+"اسے دیکھنے کی جو لو لگی، تو نصیر دیکھ ہی لیں گے ہم\nوہ ہزار آنکھ سے دور ہو، وہ ہزار پردہ نشیں سہی\n\n" +
+
+"Happy Birthday… and thank you.\nFor being a memory I never want to lose.\n\n❤️";
+
+            new Typed("#typed-text", {
+                strings: [letterContent],
+                typeSpeed: 25,
+                backSpeed: 0,
+                loop: false,
+                showCursor: false
+            });
+
+            // --- SURPRISE MODAL LOGIC ---
+            const surpriseButton = document.getElementById('surprise-button');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalClose = document.getElementById('modal-close');
+            const modalBody = document.getElementById('modal-body-content');
+
+            // CLICK EVENT
+            surpriseButton.addEventListener('click', function() {
+                console.log('Surprise button clicked!'); // Debug log
+                
+                // INJECT THE PHONE NUMBER & MESSAGE FIRST
+                modalBody.innerHTML = `
+                    <div style="padding: 20px; text-align: center;">
+                        <h2 style="color:#6a4c93; margin-bottom:15px; font-size: 1.8rem;">📱 My Number Only For You</h2>
+                        <h1 style="font-size:2.2rem; color:#000; margin-bottom:25px; font-weight:800; letter-spacing: 2px;">03185538074</h1>
+
+                        <p style="font-size:1.1rem; margin-bottom:25px; line-height: 1.6; color:#333;">
+                        Ya mera number ha… 💗<br>
+                        Is pa msg kr den…<br>
+                        Apka number <b>SARKAR</b> name se save krni ki bohot khwaish ha 😂❤️
+                        </p>
+
+                        <div style="background: rgba(255, 240, 245, 0.8); padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 4px solid #6a4c93; box-shadow: 0 3px 10px rgba(106, 76, 147, 0.2);">
+                            <p style="font-size: 1rem; line-height: 1.7; color: #444; text-align: left; margin: 0; font-style: italic;">
+                                (sorry!!)<br><br>
+                                And… have a beautiful journey ahead.<br><br>
+                                I always pray to see you successful, happy, and fearless while chasing your dreams.<br><br>
+                                No matter how far life takes you, may every step bring you closer to everything your heart desires.<br><br>
+                                You deserve the best — today, tomorrow, and always.<br><br>
+                                Ameen… always praying for you.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                // Show the modal
+                modalOverlay.classList.add('active');
+                
+                // Play sound (with error handling)
+                try {
+                    document.getElementById('click-sound').play().catch(e => {
+                        console.log('Could not play sound:', e);
+                    });
+                } catch (e) {
+                    console.log('Sound error:', e);
+                }
+
+                // CONFETTI EFFECT (with error handling)
+                try {
+                    confetti({
+                        particleCount: 200,
+                        spread: 80,
+                        origin: { y: 0.6 }
+                    });
+                } catch (e) {
+                    console.log('Confetti error:', e);
+                }
+                
+                console.log('Modal should now be visible'); // Debug log
+            });
+
+            modalClose.addEventListener('click', function() {
+                console.log('Modal close button clicked');
+                modalOverlay.classList.remove('active');
+            });
+
+            // Close on outside click
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    console.log('Modal overlay clicked, closing modal');
+                    modalOverlay.classList.remove('active');
+                }
+            });
+
+            // Additional check to ensure elements exist
+            if (!surpriseButton || !modalOverlay || !modalClose || !modalBody) {
+                console.error('Some modal elements not found:', {
+                    surpriseButton: !!surpriseButton,
+                    modalOverlay: !!modalOverlay, 
+                    modalClose: !!modalClose,
+                    modalBody: !!modalBody
+                });
+            } else {
+                console.log('All modal elements found successfully!');
+            }
+
+            // --- MUSIC LOGIC ---
+            const musicToggle = document.getElementById('music-toggle');
+            const musicIcon = document.getElementById('music-icon');
+            const backgroundMusic = document.getElementById('background-music');
+            let isPlaying = false;
+
+            musicToggle.addEventListener('click', function() {
+                if (isPlaying) {
+                    backgroundMusic.pause();
+                    musicIcon.classList.remove('fa-volume-up');
+                    musicIcon.classList.add('fa-volume-mute');
+                } else {
+                    backgroundMusic.play();
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-volume-up');
+                }
+                isPlaying = !isPlaying;
+            });
+        });
+    </script>
+</body>
+</html>
+```
